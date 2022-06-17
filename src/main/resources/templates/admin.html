@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--<html lang="en">-->
 <head>
     <meta charset="UTF-8">
-    <title>Admin page</title>
+    <title>Users list</title>
 </head>
 <body>
-<h1>Admin, welcome spring boot security page!</h1>
+<h1>Admin page</h1>
+<div th:each="user : ${allUsers}">
+    <a th:href="@{/admin/user/{id}(id=${user.getId()})}" th:text="${user.getUsername()}">user</a>
+</div>
+<!--<div>-->
+<!--    <form th:method="POST" th:action="@{/user}" th:object="${user}">-->
+<!--        <label for="name"> Enter the name </label>-->
+<!--        <input type="text" th:field="*{name}" id="name"/>-->
+<!--        <br/>-->
+<!--        <label for="email">Enter email</label>-->
+<!--        <input type="text" th:field="*{email}" id="email"/>-->
+<!--        <br/>-->
+<!--        <input type="submit" value="Add user"/>-->
+<!--    </form>-->
+<!--</div>-->
+
 </body>
 </html>
