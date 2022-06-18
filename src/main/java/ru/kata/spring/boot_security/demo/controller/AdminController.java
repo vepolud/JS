@@ -17,36 +17,36 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "/admin")
     public String listUsers(ModelMap model) {
 //        List<User> userList = userService.listUsers();
         model.addAttribute("usersList", userService.allUsers());
         model.addAttribute("user", new User());
-        return "index";
+        return "admin";
     }
 
-    @PostMapping(value = "/user")
+    @PostMapping(value = "/admin")
     public String addUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/admin/{id}")
     public String showUser(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userService.findUserById(id));
-        return "user";
+        return "useradmin";
     }
 
-    @PostMapping("/users/update")
+    @PostMapping("/admin/update")
     public String updateUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        return "user";
+        return "useradmin";
     }
 
-    @RequestMapping("/users/remove/{id}")
+    @RequestMapping("/admin/delete/{id}")
     public String removeUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
 //    @GetMapping("/user")
