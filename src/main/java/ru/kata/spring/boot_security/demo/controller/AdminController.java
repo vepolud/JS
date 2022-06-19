@@ -19,7 +19,6 @@ public class AdminController {
 
     @GetMapping(value = "/admin")
     public String listUsers(ModelMap model) {
-//        List<User> userList = userService.listUsers();
         model.addAttribute("usersList", userService.allUsers());
         model.addAttribute("user", new User());
         return "admin";
@@ -48,32 +47,4 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
-
-//    @GetMapping("/user")
-//    public String userPage(Model model){
-//        model.addAttribute(userService.getCurrentUser());
-//        return "user";
-//    }
-
-//    @GetMapping("/admin")
-//    public String userList(Model model) {
-//        model.addAttribute("allUsers", userService.allUsers());
-//        return "admin";
-//    }
-//
-//    @PostMapping("/admin")
-//    public String  deleteUser(@RequestParam(required = true, defaultValue = "" ) Long userId,
-//                              @RequestParam(required = true, defaultValue = "" ) String action,
-//                              Model model) {
-//        if (action.equals("delete")){
-//            userService.deleteUser(userId);
-//        }
-//        return "redirect:/admin";
-//    }
-//
-//    @GetMapping("/admin/user/{userId}")
-//    public String  gtUser(@PathVariable("userId") Long userId, Model model) {
-//        model.addAttribute("allUsers", userService.usergtList(userId));
-//        return "admin";
-//    }
 }

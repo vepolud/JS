@@ -10,23 +10,5 @@
 <p th:text="${user.getPassword()}">VALUE</p>
 <a th:href="@{/}">Go to main page</a>
 <a th:href="@{/logout}">Logout</a>
-<!--<div>-->
-<!--    <form th:method="POST" th:action="@{/users/update}" th:object="${user}">-->
-<!--        <input type="hidden" th:field="*{id}" id="id"/>-->
-<!--        <label for="name"> Enter the name </label>-->
-<!--        <input type="text" th:field="*{name}" id="name"/>-->
-<!--        <br/>-->
-<!--        <label for="email">Enter email</label>-->
-<!--        <input type="text" th:field="*{email}" id="email"/>-->
-<!--        <br/>-->
-<!--        <input type="submit" value="Update user"/>-->
-<!--    </form>-->
-<!--</div>-->
-<!--<div>-->
-<!--    <form th:method="POST" th:action="@{/users/remove/{id}(id=${user.getId()})}" th:object="${user}">-->
-<!--        <input type="submit" value="Remove this user user"/>-->
-<!--    </form>-->
-<!--</div>-->
-
 </body>
 </html>

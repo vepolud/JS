@@ -5,9 +5,14 @@
   <title>User</title>
 </head>
 <body>
+<h3>User details</h3>
 <p th:text="${user.getId()}">VALUE</p>
 <p th:text="${user.getUsername()}">VALUE</p>
 <p th:text="${user.getPassword()}">VALUE</p>
+<h3> User roles</h3>
+<div th:each="role : ${user.getRoles()}">
+  <p th:text="${role.getName()}">VALUE</p>
+</div>
 <a th:href="@{/}">Go to main page</a>
 <div>
   <form th:method="POST" th:action="@{/admin/update}" th:object="${user}">

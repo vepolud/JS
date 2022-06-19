@@ -6,52 +6,35 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
     @PersistenceContext
     private EntityManager em;
-    @Autowired
+    final
     UserRepository userRepository;
-    @Autowired
+    final
     RoleRepository roleRepository;
-//    @Autowired
-//    BCryptPasswordEncoder bCryptPasswordEncoder;
 
-//    public void createEntities(){
-//        Role adminRole = new Role(1L, "ADMIN");
-//        Role userRole = new Role(2L, "USER");
-//        Set<Role> userRoles = new HashSet<>();
-//        userRoles.add(userRole);
-//        Set<Role> adminRoles = new HashSet<>();
-//        adminRoles.add(adminRole);
-//
-//        User user = new User();
-//        user.setUsername("user");
-//        user.setPassword("user");
-//        user.setRoles(userRoles);
-//        User admin = new User();
-//        admin.setUsername("admin");
-//        admin.setPassword("admin");
-//        admin.setRoles(adminRoles);
-//        roleRepository.save(userRole);
-//        roleRepository.save(adminRole);
-//        userRepository.save(admin);
-//        userRepository.save(user);
-//    }
+    @Autowired
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+    }
 
-    public User getCurrentUser(){
-        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public User getCurrentUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @Override
@@ -65,6 +48,14 @@ public class UserService implements UserDetailsService {
 
         return user1;
     }
+
+//    public void addRole(){
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        Set<Role> roles = user.getRoles();
+//        roles.add(roleRepository.getById(2l));
+//        userRepository.save(user);
+//    }
 
     public User findUserById(Long userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
@@ -83,7 +74,6 @@ public class UserService implements UserDetailsService {
         }
 
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
@@ -94,11 +84,6 @@ public class UserService implements UserDetailsService {
             return true;
         }
         return false;
-    }
-
-    public List<User> usergtList(Long idMin) {
-        return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
-                .setParameter("paramId", idMin).getResultList();
     }
 }
 
