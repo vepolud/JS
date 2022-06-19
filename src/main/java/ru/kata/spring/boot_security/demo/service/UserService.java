@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setRoles(Collections.singleton(new Role(2L, "USER")));
         userRepository.save(user);
         return true;
     }
