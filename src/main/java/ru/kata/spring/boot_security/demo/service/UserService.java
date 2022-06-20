@@ -22,8 +22,8 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-//    @Autowired
-//    BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository) {
@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
         for (Role role : user.getRoles()) {
             System.out.println(role.getName());
         }
-
+        System.out.println(user.getPassword());
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
@@ -62,14 +62,14 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
+//        User userFromDB = userRepository.findByUsername(user.getUsername());
 
-        if (userFromDB != null) {
-            return false;
-        }
+//        if (userFromDB != null) {
+//            return false;
+//        }
 
         user.setRoles(Collections.singleton(new Role(2L, "USER")));
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
