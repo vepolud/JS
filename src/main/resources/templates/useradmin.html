@@ -16,6 +16,7 @@
 <a th:href="@{/}">Go to main page</a>
 <div>
   <form th:method="POST" th:action="@{/admin/update}" th:object="${user}">
+    <input type="hidden" th:field="*{roles}" id="roles">
     <input type="hidden" th:field="*{id}" id="id"/>
     <label for="name"> Enter the name </label>
     <input type="text" th:field="*{username}" id="name"/>

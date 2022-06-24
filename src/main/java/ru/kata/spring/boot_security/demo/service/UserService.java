@@ -12,10 +12,8 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
-
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -38,12 +36,6 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        System.out.println(user.getId() + " " + user.getUsername());
-        for (Role role : user.getRoles()) {
-            System.out.println(role.getName());
-        }
-        System.out.println(user.getPassword());
-
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -52,8 +44,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(Long userId) {
-        User user = userRepository.findById(userId).orElse(new User());
-        return user;
+        return userRepository.findById(userId).orElse(new User());
     }
 
     public List<User> allUsers() {
@@ -61,25 +52,28 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean saveUser(User user) {
-        user.setRoles(Collections.singleton(new Role(2L, "USER")));
+    public void saveUser(User user) {
+        user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return true;
     }
 
     @Transactional
     public void updateUser(User user){
-        userRepository.save(user);
+        if(user.getPassword().equals(findUserById(user.getId()).getPassword())){
+            userRepository.save(user);
+        } else {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+        }
+
     }
 
     @Transactional
-    public boolean deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         if (userRepository.findById(userId).isPresent()) {
             userRepository.deleteById(userId);
-            return true;
         }
-        return false;
     }
 }
 
