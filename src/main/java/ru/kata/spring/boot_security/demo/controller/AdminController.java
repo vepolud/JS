@@ -17,17 +17,25 @@ public class AdminController {
         this.userService = userService;
     }
 
+    @GetMapping(value = "/index")
+    public String userDetails(ModelMap model) {
+        model.addAttribute("usersList", userService.allUsers());
+        model.addAttribute("user", userService.getCurrentUser());
+        model.addAttribute("newUser", new User());
+        return "index";
+    }
+
     @GetMapping(value = "/admin")
     public String listUsers(ModelMap model) {
         model.addAttribute("usersList", userService.allUsers());
-        model.addAttribute("user", new User());
-        return "admin";
+        model.addAttribute("newUser", new User());
+        return "index";
     }
 
     @PostMapping(value = "/admin")
-    public String addUser(@ModelAttribute("user") User user) {
+    public String addUser(@ModelAttribute("newUser") User user) {
         userService.saveUser(user);
-        return "redirect:/admin";
+        return "redirect:/index";
     }
 
     @GetMapping("/admin/{id}")
