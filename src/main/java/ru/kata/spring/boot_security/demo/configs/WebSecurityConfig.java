@@ -49,6 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").not().fullyAuthenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
+//                .loginPage("/login")
+                .usernameParameter("email")
                 .permitAll()
                 .and()
                 .logout()
