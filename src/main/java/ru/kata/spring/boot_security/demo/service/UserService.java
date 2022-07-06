@@ -14,6 +14,7 @@ import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -51,9 +52,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public List<Role> getAllRoles(){
+        return roleRepository.findAll();
+    }
+
     @Transactional
     public void saveUser(User user) {
-        user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
+        if(user.getRoles().isEmpty()) {
+            user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
+        }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

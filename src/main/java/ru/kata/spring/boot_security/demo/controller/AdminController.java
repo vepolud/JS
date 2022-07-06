@@ -17,25 +17,26 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/index")
+    @GetMapping(value = "/admin")
     public String userDetails(ModelMap model) {
         model.addAttribute("usersList", userService.allUsers());
         model.addAttribute("user", userService.getCurrentUser());
         model.addAttribute("newUser", new User());
-        return "index";
+        model.addAttribute("rolesList", userService.getAllRoles());
+        return "admin";
     }
 
-    @GetMapping(value = "/admin")
-    public String listUsers(ModelMap model) {
-        model.addAttribute("usersList", userService.allUsers());
-        model.addAttribute("newUser", new User());
-        return "index";
-    }
+//    @GetMapping(value = "/admin")
+//    public String listUsers(ModelMap model) {
+//        model.addAttribute("usersList", userService.allUsers());
+//        model.addAttribute("newUser", new User());
+//        return "index";
+//    }
 
     @PostMapping(value = "/admin")
     public String addUser(@ModelAttribute("newUser") User user) {
         userService.saveUser(user);
-        return "redirect:/index";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/{id}")
@@ -44,10 +45,10 @@ public class AdminController {
         return "useradmin";
     }
 
-    @PostMapping("/admin/update")
-    public String updateUser(@ModelAttribute("user") User user) {
+    @PostMapping("/admin/edit/{id}")
+    public String updateUser(@ModelAttribute("usEdit") User user) {
         userService.updateUser(user);
-        return "useradmin";
+        return "redirect:/admin";
     }
 
     @RequestMapping("/admin/delete/{id}")
