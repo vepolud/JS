@@ -32,12 +32,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/{id}")
-    public String showUser(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
-        return "useradmin";
-    }
-
     @PostMapping("/admin/edit/{id}")
     public String updateUser(@ModelAttribute("editedUser") User user) {
         userService.updateUser(user);
