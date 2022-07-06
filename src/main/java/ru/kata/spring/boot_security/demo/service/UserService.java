@@ -14,7 +14,6 @@ import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -52,13 +51,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public List<Role> getAllRoles(){
+    public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 
     @Transactional
     public void saveUser(User user) {
-        if(user.getRoles().isEmpty()) {
+        if (user.getRoles().isEmpty()) {
             user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -66,14 +65,14 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUser(User user){
-        if(user.getPassword().isEmpty()){
+    public void updateUser(User user) {
+        if (user.getPassword().isEmpty()) {
             user.setPassword(findUserById(user.getId()).getPassword());
         }
-        if(user.getRoles()==null){
+        if (user.getRoles() == null) {
             user.setRoles(findUserById(user.getId()).getRoles());
         }
-        if(user.getPassword().equals(findUserById(user.getId()).getPassword())){
+        if (user.getPassword().equals(findUserById(user.getId()).getPassword())) {
             userRepository.save(user);
         } else {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
