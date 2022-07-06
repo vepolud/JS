@@ -17,7 +17,7 @@ public class UserController {
 
     @GetMapping("/user")
     public String userPage(Model model) {
-        model.addAttribute(userService.getCurrentUser());
+        model.addAttribute("user",userService.getCurrentUser());
         return "user";
     }
 }
