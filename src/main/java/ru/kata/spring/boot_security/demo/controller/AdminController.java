@@ -2,22 +2,22 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 @Controller
+@RequestMapping(value = "/admin")
 public class AdminController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/admin")
+    @GetMapping
     public String userDetails(ModelMap model) {
         model.addAttribute("usersList", userService.allUsers());
         model.addAttribute("user", userService.getCurrentUser());
@@ -26,19 +26,19 @@ public class AdminController {
         return "admin";
     }
 
-    @PostMapping(value = "/admin")
+    @PostMapping
     public String addUser(@ModelAttribute("newUser") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-    @PostMapping("/admin/edit/{id}")
+    @PostMapping("/edit/{id}")
     public String updateUser(@ModelAttribute("editedUser") User user) {
         userService.updateUser(user);
         return "redirect:/admin";
     }
 
-    @RequestMapping("/admin/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String removeUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
