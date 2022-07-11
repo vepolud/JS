@@ -1,63 +1,58 @@
-const url = "http://localhost:8080/rest/";
-const renderTable = document.getElementById("user-data");
-const addForm = document.getElementById("add-form");
-
-const renderPosts = (users) => {
-    let temp = '';
-    users.forEach((u) => {
-        temp += `<tr>
-                                <td>${u.id}</td>
-                                <td>${u.username}</td>
-                                <td>${u.lastName}</td>
-                                <td>${u.age}</td>
-                                <td>${u.email}</td>
-                                <td>${u.roles.map(role => role.name).join(', ')}</td>
-
-                                <td>
-                                <button class="btn btn-info" type="button"
-                                data-toggle="modal" data-target="#modalEdit"
-                                onclick="editModal(${u.id})">Edit</button></td>
-
-                                <td>
-                                <button class="btn btn-danger" type="button"
-                                data-toggle="modal" data-target="#modalDelete"
-                                onclick="deleteModal(${u.id})">Delete</button></td>
-                                </tr>
-                                `
-    })
-    renderTable.innerHTML = temp;
-}
+const baseUrl = "http://localhost:8080/rest/";
+const usersTable = document.getElementById("users-table");
+const newUserForm = document.getElementById("newUser-form");
 
 function getAllUsers() {
-    fetch(url)
+    fetch(baseUrl)
         .then(res => res.json())
-        .then(data => {
-            renderPosts(data)
+        .then(users => {
+            let temp = '';
+            users.forEach((user) => {
+                temp += `<tr>
+                                <td>${user.id}</td>
+                                <td>${user.username}</td>
+                                <td>${user.lastName}</td>
+                                <td>${user.age}</td>
+                                <td>${user.email}</td>
+                                <td>${user.roles.map(role => role.name).join(', ')}</td>
+                                <td>
+                                    <button class="btn btn-info" type="button"
+                                    data-toggle="modal" data-target="#modalEdit"
+                                    onclick="editModal(${user.id})">Edit</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" type="button"
+                                    data-toggle="modal" data-target="#modalDelete"
+                                    onclick="deleteModal(${user.id})">Delete</button>
+                                </td>
+                        </tr>`
+            })
+            usersTable.innerHTML = temp;
         })
 }
 
 getAllUsers()
 
-addForm.addEventListener('submit', addUser)
+newUserForm.addEventListener('submit', addNewUser)
 
-function addUser() {
-    let nameValue = document.getElementById("firstname").value;
-    let surnameValue = document.getElementById("lastname").value;
+function addNewUser() {
+    let usernameValue = document.getElementById("username").value;
+    let lastnameValue = document.getElementById("lastname").value;
     let ageValue = document.getElementById("age").value;
     let emailValue = document.getElementById("email").value;
     let passwordValue = document.getElementById("password").value;
-    let roles = getRoles(Array.from(document.getElementById("addRoles").selectedOptions).map(role => role.value));
+    let roles = getRolesFromForm(Array.from(document.getElementById("addRoles").selectedOptions).map(role => role.value));
 
     let newUser = {
-        username: nameValue,
-        lastName: surnameValue,
+        username: usernameValue,
+        lastName: lastnameValue,
         age: ageValue,
         email: emailValue,
         password: passwordValue,
         roles: roles
     }
 
-    fetch(url, {
+    fetch(baseUrl, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -71,19 +66,19 @@ function addUser() {
         })
 }
 
-function  getRoles(rols) {
+function getRolesFromForm(addedRoles) {
     let roles = [];
-    if (rols.indexOf("ADMIN") >= 0) {
+    if (addedRoles.indexOf("ADMIN") >= 0) {
         roles.push({"id": 1});
     }
-    if (rols.indexOf("USER") >= 0) {
+    if (addedRoles.indexOf("USER") >= 0) {
         roles.push({"id": 2});
     }
     return roles;
 }
 
 function deleteModal(id) {
-    fetch(url + id, {
+    fetch(baseUrl + id, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8'
@@ -102,7 +97,7 @@ function deleteModal(id) {
 }
 
 async function deleteUser() {
-    await fetch(url + document.getElementById('idDelete').value, {
+    await fetch(baseUrl + document.getElementById('idDelete').value, {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -115,20 +110,20 @@ async function deleteUser() {
 }
 
 function editModal(id) {
-    fetch(url + id, {
+    fetch(baseUrl + id, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8'
         }
     }).then(res => {
-        res.json().then(us => {
+        res.json().then(user => {
 
-            document.getElementById('idEdit').value = us.id;
-            document.getElementById('firstnameEdit').value = us.username;
-            document.getElementById('lastnameEdit').value = us.lastName;
-            document.getElementById('ageEdit').value = us.age;
-            document.getElementById('emailEdit').value = us.email;
-            document.getElementById('passwordEdit').value = us.password;
+            document.getElementById('idEdit').value = user.id;
+            document.getElementById('usernameEdit').value = user.username;
+            document.getElementById('lastnameEdit').value = user.lastName;
+            document.getElementById('ageEdit').value = user.age;
+            document.getElementById('emailEdit').value = user.email;
+            document.getElementById('passwordEdit').value = user.password;
 
         })
     });
@@ -136,24 +131,24 @@ function editModal(id) {
 
 async function editUser() {
     let idValue = document.getElementById("idEdit").value;
-    let nameValue = document.getElementById("firstnameEdit").value;
-    let surnameValue = document.getElementById("lastnameEdit").value;
+    let usernameValue = document.getElementById("usernameEdit").value;
+    let lastnameValue = document.getElementById("lastnameEdit").value;
     let ageValue = document.getElementById("ageEdit").value;
     let emailValue = document.getElementById("emailEdit").value;
     let passwordValue = document.getElementById("passwordEdit").value;
-    let roles = getRoles(Array.from(document.getElementById("editRoles").selectedOptions).map(role => role.value));
+    let roles = getRolesFromForm(Array.from(document.getElementById("editRoles").selectedOptions).map(role => role.value));
 
     let user = {
         id: idValue,
-        username: nameValue,
-        lastName: surnameValue,
+        username: usernameValue,
+        lastName: lastnameValue,
         age: ageValue,
         email: emailValue,
         password: passwordValue,
         roles: roles
     }
 
-    await fetch(url, {
+    await fetch(baseUrl, {
         method: "PUT",
         headers: {
             'Accept': 'application/json',
@@ -173,15 +168,15 @@ const panel = document.getElementById("admin-panel");
 function userAuthInfo() {
     fetch(urlAuth)
         .then((res) => res.json())
-        .then((u) => {
+        .then((user) => {
             let temp = '';
             temp += `<tr>
-            <td>${u.id}</td>
-            <td>${u.username}</td>
-            <td>${u.lastName}</td>
-            <td>${u.age}</td>
-            <td>${u.email}</td>
-            <td>${u.roles.map(role => role.name).join(', ')}</td>
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td>${user.lastName}</td>
+            <td>${user.age}</td>
+            <td>${user.email}</td>
+            <td>${user.roles.map(role => role.name).join(', ')}</td>
             </tr>`;
             adminData.innerHTML = temp;
         });
