@@ -110,4 +110,11 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "User = name: %s, lastname = %s, age = %d, email = %s, pas = %s",
+                getUsername(), getLastName(), getAge(), getEmail(), getPassword());
+    }
 }

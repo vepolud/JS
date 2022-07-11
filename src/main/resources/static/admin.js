@@ -49,8 +49,8 @@ function addUser() {
     let roles = getRoles(Array.from(document.getElementById("addRoles").selectedOptions).map(role => role.value));
 
     let newUser = {
-        name: nameValue,
-        surname: surnameValue,
+        username: nameValue,
+        lastName: surnameValue,
         age: ageValue,
         email: emailValue,
         password: passwordValue,
@@ -71,7 +71,7 @@ function addUser() {
         })
 }
 
-function getRoles(rols) {
+function  getRoles(rols) {
     let roles = [];
     if (rols.indexOf("ADMIN") >= 0) {
         roles.push({"id": 1});
