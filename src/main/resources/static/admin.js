@@ -92,8 +92,8 @@ function deleteModal(id) {
         res.json().then(us => {
 
             document.getElementById('idDelete').value = us.id;
-            document.getElementById('firstnameDelete').value = us.name;
-            document.getElementById('lastnameDelete').value = us.surname;
+            document.getElementById('firstnameDelete').value = us.username;
+            document.getElementById('lastnameDelete').value = us.lastName;
             document.getElementById('ageDelete').value = us.age;
             document.getElementById('emailDelete').value = us.email;
             document.getElementById('delPassword').value = us.password;
@@ -124,8 +124,8 @@ function editModal(id) {
         res.json().then(us => {
 
             document.getElementById('idEdit').value = us.id;
-            document.getElementById('firstnameEdit').value = us.name;
-            document.getElementById('lastnameEdit').value = us.surname;
+            document.getElementById('firstnameEdit').value = us.username;
+            document.getElementById('lastnameEdit').value = us.lastName;
             document.getElementById('ageEdit').value = us.age;
             document.getElementById('emailEdit').value = us.email;
             document.getElementById('passwordEdit').value = us.password;
@@ -145,8 +145,8 @@ async function editUser() {
 
     let user = {
         id: idValue,
-        name: nameValue,
-        surname: surnameValue,
+        username: nameValue,
+        lastName: surnameValue,
         age: ageValue,
         email: emailValue,
         password: passwordValue,
