@@ -1,17 +1,17 @@
-    const url = "http://localhost:8080/rest/";
-    const renderTable = document.getElementById("user-data");
-    const addForm = document.getElementById("add-form");
+const url = "http://localhost:8080/rest/";
+const renderTable = document.getElementById("user-data");
+const addForm = document.getElementById("add-form");
 
-    const renderPosts = (users) => {
+const renderPosts = (users) => {
     let temp = '';
     users.forEach((u) => {
-    temp +=`<tr>
+        temp += `<tr>
                                 <td>${u.id}</td>
-                                <td id=${'name' + u.id}>${u.name}</td>
-                                <td id=${'surname' + u.id}>${u.surname}</td>
-                                <td id=${'age' + u.id}>${u.age}</td>
-                                <td id=${'email' + u.id}>${u.email}</td>
-                                <td id=${'role' + u.id}>${u.role}</td>
+                                <td>${u.username}</td>
+                                <td>${u.lastName}</td>
+                                <td>${u.age}</td>
+                                <td>${u.email}</td>
+                                <td>${u.roles.map(role => role.name).join(', ')}</td>
 
                                 <td>
                                 <button class="btn btn-info" type="button"
@@ -24,21 +24,23 @@
                                 onclick="deleteModal(${u.id})">Delete</button></td>
                                 </tr>
                                 `
-})
+    })
     renderTable.innerHTML = temp;
 }
 
-    function getAllUsers() {
+function getAllUsers() {
     fetch(url)
         .then(res => res.json())
-        .then(data => {renderPosts(data)})
+        .then(data => {
+            renderPosts(data)
+        })
 }
 
-    getAllUsers()
+getAllUsers()
 
-    addForm.addEventListener('submit', addUser)
+addForm.addEventListener('submit', addUser)
 
-    function addUser() {
+function addUser() {
     let nameValue = document.getElementById("firstname").value;
     let surnameValue = document.getElementById("lastname").value;
     let ageValue = document.getElementById("age").value;
@@ -47,40 +49,40 @@
     let roles = getRoles(Array.from(document.getElementById("addRoles").selectedOptions).map(role => role.value));
 
     let newUser = {
-    name: nameValue,
-    surname: surnameValue,
-    age: ageValue,
-    email: emailValue,
-    password: passwordValue,
-    roles: roles
-}
+        name: nameValue,
+        surname: surnameValue,
+        age: ageValue,
+        email: emailValue,
+        password: passwordValue,
+        roles: roles
+    }
 
     fetch(url, {
-    method: "POST",
-    headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json;charset=UTF-8'
-},
-    body: JSON.stringify(newUser)
-})
-    .then(() => {
-    document.getElementById("usersTable").click();
-    getAllUsers();
-})
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        body: JSON.stringify(newUser)
+    })
+        .then(() => {
+            document.getElementById("usersTable").click();
+            getAllUsers();
+        })
 }
 
-    function getRoles(rols) {
+function getRoles(rols) {
     let roles = [];
     if (rols.indexOf("ADMIN") >= 0) {
-    roles.push({"id": 1});
-}
+        roles.push({"id": 1});
+    }
     if (rols.indexOf("USER") >= 0) {
-    roles.push({"id": 2});
-}
+        roles.push({"id": 2});
+    }
     return roles;
 }
 
-    function deleteModal(id) {
+function deleteModal(id) {
     fetch(url + id, {
         headers: {
             'Accept': 'application/json',
@@ -99,7 +101,7 @@
     });
 }
 
-    async function deleteUser() {
+async function deleteUser() {
     await fetch(url + document.getElementById('idDelete').value, {
         method: 'DELETE',
         headers: {
@@ -112,7 +114,7 @@
     document.getElementById("deleteButton").click();
 }
 
-    function editModal(id) {
+function editModal(id) {
     fetch(url + id, {
         headers: {
             'Accept': 'application/json',
@@ -132,7 +134,7 @@
     });
 }
 
-    async function editUser() {
+async function editUser() {
     let idValue = document.getElementById("idEdit").value;
     let nameValue = document.getElementById("firstnameEdit").value;
     let surnameValue = document.getElementById("lastnameEdit").value;
@@ -142,38 +144,38 @@
     let roles = getRoles(Array.from(document.getElementById("editRoles").selectedOptions).map(role => role.value));
 
     let user = {
-    id: idValue,
-    name: nameValue,
-    surname: surnameValue,
-    age: ageValue,
-    email: emailValue,
-    password: passwordValue,
-    roles: roles
-}
+        id: idValue,
+        name: nameValue,
+        surname: surnameValue,
+        age: ageValue,
+        email: emailValue,
+        password: passwordValue,
+        roles: roles
+    }
 
     await fetch(url, {
-    method: "PUT",
-    headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json;charset=UTF-8'
-},
-    body: JSON.stringify(user)
-});
+        method: "PUT",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        body: JSON.stringify(user)
+    });
 
     getAllUsers()
     document.getElementById("updateButton").click();
 }
 
-    const adminData = document.getElementById("data-admin");
-    const urlAuth = "http://localhost:8080/rest/user";
-    const panel = document.getElementById("admin-panel");
+const adminData = document.getElementById("data-admin");
+const urlAuth = "http://localhost:8080/rest/user";
+const panel = document.getElementById("admin-panel");
 
-    function userAuthInfo() {
-        fetch(urlAuth)
-            .then((res) => res.json())
-            .then((u) => {
-                let temp = '';
-                temp += `<tr>
+function userAuthInfo() {
+    fetch(urlAuth)
+        .then((res) => res.json())
+        .then((u) => {
+            let temp = '';
+            temp += `<tr>
             <td>${u.id}</td>
             <td>${u.username}</td>
             <td>${u.lastName}</td>
@@ -181,18 +183,18 @@
             <td>${u.email}</td>
             <td>${u.roles.map(role => role.name).join(', ')}</td>
             </tr>`;
-                adminData.innerHTML = temp;
-            });
-    }
+            adminData.innerHTML = temp;
+        });
+}
 
-    userAuthInfo()
+userAuthInfo()
 
-    function userPanel() {
-        fetch(urlAuth)
-            .then((res) => res.json())
-            .then((u) => {
-                panel.innerHTML = `<h5>${u.email} with roles: ${u.roles.map(role => role.name).join(', ')}</h5>`
-            });
-    }
+function userPanel() {
+    fetch(urlAuth)
+        .then((res) => res.json())
+        .then((u) => {
+            panel.innerHTML = `<h5>${u.email} with roles: ${u.roles.map(role => role.name).join(', ')}</h5>`
+        });
+}
 
-    userPanel()
+userPanel()
