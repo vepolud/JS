@@ -14,7 +14,6 @@
 <nav class="navbar navbar-dark bg-dark text-white">
     <div class="container-fluid">
         <div class="navbar-header" id="admin-panel">
-            <!--            заполнение js -->
         </div>
         <div class="nav navbar-nav navbar-right">
             <li>
@@ -24,12 +23,8 @@
     </div>
 </nav>
 
-<!--Основная страница-->
-
 <div class="container-fluid">
     <div class="row">
-
-        <!--Левая панель-->
 
         <div class="col-2" style="padding: 0; padding-top: 15px">
             <ul class="nav nav-pills flex-column">
@@ -42,12 +37,8 @@
             </ul>
         </div>
 
-        <!--Правая панель-->
-
         <div class="col-10 bg-light">
-            <div class="tab-content" style="padding-top: 15px; height: 200vh">
-
-                <!--Админская панель-->
+            <div class="tab-content" style="padding-top: 10px; height: 100vh">
 
                 <div class="tab-pane fade show active" id="adminPanel">
                     <h2>Admin panel</h2>
@@ -60,9 +51,6 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-
-                        <!--Таблица users-->
-
                         <div class="tab-pane fade show active" id="usTable">
                             <div class="card">
                                 <h5 class="card-header">All users</h5>
@@ -80,15 +68,11 @@
                                             <th>Delete</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="users-table">
-
-                                        </tbody>
+                                        <tbody id="users-table"></tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-
-                        <!--Добавление нового пользователя-->
 
                         <div class="tab-pane fade" id="newUs">
                             <div class="form-group">
@@ -154,8 +138,6 @@
     </div>
 </div>
 
-<!--Редактирование пользователя-->
-
 <div class="modal" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -213,8 +195,6 @@
     </div>
 </div>
 
-<!--Удаление пользователя-->
-
 <div class="modal" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -271,9 +251,6 @@
 
 <div class="container-fluid" sec:authorize="hasAnyAuthority('USER')">
     <div class="row">
-
-        <!--Левая панель для просмотра информации о User-->
-
         <div class="col-2" style="padding: 0; padding-top: 15px">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
@@ -285,20 +262,12 @@
             </ul>
         </div>
 
-        <!--Правая панель для просмотра информации о User-->
-
         <div class="col-10 bg-light">
             <div class="tab-content" style="padding-top: 15px; height: 100vh">
-
-                <!--User панель-->
-
                 <div class="tab-pane fade show active" id="user">
                     <div class="tab-content">
-
-
                         <div class="col-10 bg-light" id="usrPanel">
                             <div class="tab-content" style="padding-top: 15px; height: 100vh">
-
                                 <div class="tab-pane fade show active">
                                     <h2>User information-page</h2>
                                     <div class="card">
@@ -318,7 +287,6 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="data-admin">
-
                                                 </tbody>
                                             </table>
                                         </div>

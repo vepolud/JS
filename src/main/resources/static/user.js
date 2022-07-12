@@ -1,24 +1,23 @@
-// alert("js is active")
-const data = document.getElementById("data-user");
-const url = "http://localhost:8080/rest/user";
-const panel = document.getElementById("user-panel");
+const userData = document.getElementById("userData");
+const baseUrl = "http://localhost:8080/rest/user";
+const topUserPanel = document.getElementById("topUserPanel");
 
-function userAuthInfo() {
-    fetch(url)
+function getCurrentUser() {
+    fetch(baseUrl)
         .then((res) => res.json())
-        .then((u) => {
+        .then((user) => {
             let temp = '';
             temp += `<tr>
-            <td>${u.id}</td>
-            <td>${u.username}</td>
-            <td>${u.lastName}</td>
-            <td>${u.age}</td>
-            <td>${u.email}</td>
-            <td>${u.roles.map(role => role.name).join(', ')}</td>
-            </tr>`;
-            data.innerHTML = temp;
-            panel.innerHTML = `<h5>${u.email} with roles: ${u.roles.map(role => role.name).join(', ')}</h5>`
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.lastName}</td>
+                        <td>${user.age}</td>
+                        <td>${user.email}</td>
+                        <td>${user.roles.map(role => role.name).join(', ')}</td>
+                    </tr>`;
+            userData.innerHTML = temp;
+            topUserPanel.innerHTML = `<h5>${user.email} with roles: ${user.roles.map(role => role.name).join(', ')}</h5>`
         });
 }
 
-userAuthInfo()
+getCurrentUser()

@@ -1,6 +1,38 @@
 const baseUrl = "http://localhost:8080/rest/";
+const urlAuth = "http://localhost:8080/rest/user";
 const usersTable = document.getElementById("users-table");
 const newUserForm = document.getElementById("newUser-form");
+const adminData = document.getElementById("data-admin");
+const panel = document.getElementById("admin-panel");
+
+function getCurrentUser() {
+    fetch(urlAuth)
+        .then((res) => res.json())
+        .then((user) => {
+            let temp = '';
+            temp += `<tr>
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td>${user.lastName}</td>
+            <td>${user.age}</td>
+            <td>${user.email}</td>
+            <td>${user.roles.map(role => role.name).join(', ')}</td>
+            </tr>`;
+            adminData.innerHTML = temp;
+        });
+}
+
+getCurrentUser()
+
+function userPanel() {
+    fetch(urlAuth)
+        .then((res) => res.json())
+        .then((u) => {
+            panel.innerHTML = `<h5>${u.email} with roles: ${u.roles.map(role => role.name).join(', ')}</h5>`
+        });
+}
+
+userPanel()
 
 function getAllUsers() {
     fetch(baseUrl)
@@ -117,7 +149,6 @@ function editModal(id) {
         }
     }).then(res => {
         res.json().then(user => {
-
             document.getElementById('idEdit').value = user.id;
             document.getElementById('usernameEdit').value = user.username;
             document.getElementById('lastnameEdit').value = user.lastName;
@@ -161,35 +192,3 @@ async function editUser() {
     document.getElementById("updateButton").click();
 }
 
-const adminData = document.getElementById("data-admin");
-const urlAuth = "http://localhost:8080/rest/user";
-const panel = document.getElementById("admin-panel");
-
-function userAuthInfo() {
-    fetch(urlAuth)
-        .then((res) => res.json())
-        .then((user) => {
-            let temp = '';
-            temp += `<tr>
-            <td>${user.id}</td>
-            <td>${user.username}</td>
-            <td>${user.lastName}</td>
-            <td>${user.age}</td>
-            <td>${user.email}</td>
-            <td>${user.roles.map(role => role.name).join(', ')}</td>
-            </tr>`;
-            adminData.innerHTML = temp;
-        });
-}
-
-userAuthInfo()
-
-function userPanel() {
-    fetch(urlAuth)
-        .then((res) => res.json())
-        .then((u) => {
-            panel.innerHTML = `<h5>${u.email} with roles: ${u.roles.map(role => role.name).join(', ')}</h5>`
-        });
-}
-
-userPanel()
